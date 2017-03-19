@@ -1,6 +1,9 @@
 class Factree::Decision
-  def initialize(&decide)
+  attr_reader :required_facts
+
+  def initialize(required_facts=[], &decide)
     @decide = decide
+    @required_facts = required_facts.uniq.freeze
     freeze
   end
 
