@@ -4,6 +4,8 @@ class Factree::Decision
   # @return [Array<Symbol>]
   attr_reader :required_facts
 
+  # Create a new decision tree node. The block is used to decide on the next node for a given set of facts.
+  # @param [Array<Symbol>] required_facts The names of facts required to decide on the next node.
   def initialize(required_facts=[], &decide)
     @decide = decide
     @required_facts = required_facts.uniq.freeze
