@@ -2,10 +2,10 @@ require 'test_helper'
 
 describe Factree::Decision do
   let(:required_facts) { %i[fact_b fact_a] }
-  let(:decision) { :decision }
+  let(:decide) { Minitest::Mock.new }
   subject do
-    Factree::Decision.new(required_facts) do
-      decision
+    Factree::Decision.new(required_facts) do |*args|
+      decide.call(*args)
     end
   end
 
@@ -13,8 +13,15 @@ describe Factree::Decision do
     subject.frozen?.must_equal true
   end
 
-  it "uses the proc to decide on the next step" do
-    subject.decide.must_equal decision
+  describe "#decide" do
+    let(:facts) { :facts }
+    let(:decision) { :decision }
+
+    it "uses the supplied proc to decide on the next step" do
+      decide.expect(:call, decision, [facts])
+      subject.decide(facts).must_equal decision
+      decide.verify
+    end
   end
 
   it "has immutable required_facts" do
