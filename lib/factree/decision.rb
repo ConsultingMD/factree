@@ -1,5 +1,10 @@
 class Factree::Decision
-  def initialize *args
+  def initialize(&decide)
+    @decide = decide
     freeze
+  end
+
+  def decide
+    @decide.call
   end
 end
