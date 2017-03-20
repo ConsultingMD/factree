@@ -2,7 +2,7 @@ Factree::CycleError = Class.new(StandardError)
 
 module Factree::Pathfinder
   # Returns the sequence of nodes for the furthest path possible from the given node with the given set of facts.
-  def self.find_path(node, facts, visited=Set.new)
+  def self.find_node_sequence(node, facts, visited=Set.new)
     # No cycles allowed
     if visited.include? node
       raise Factree::CycleError,
@@ -18,6 +18,6 @@ module Factree::Pathfinder
 
     # Recursive case: return full path by prepending this node to the rest
     next_node = node.decide(facts)
-    return [node] + find_path(next_node, facts, visited + [node])
+    return [node] + find_node_sequence(next_node, facts, visited + [node])
   end
 end

@@ -2,7 +2,7 @@ require 'test_helper'
 require 'factree/pathfinder'
 
 describe Factree::Pathfinder do
-  describe "#find_path" do
+  describe "#find_node_sequence" do
     let(:facts) do
       {
         has_unibrow?: true,
@@ -30,7 +30,7 @@ describe Factree::Pathfinder do
       end
     end
 
-    subject { Factree::Pathfinder.find_path root, facts }
+    subject { Factree::Pathfinder.find_node_sequence root, facts }
 
     it "starts at the root" do
       subject.first.must_equal root
