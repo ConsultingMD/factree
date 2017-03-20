@@ -45,4 +45,8 @@ describe Factree::Decision do
       subject.to_s.must_be :=~, /<Factree::Decision decide=.*decision_test\.rb:\d+> required_facts=\[fact_b, fact_a\]>/
     end
   end
+
+  it "is not a conclusion" do
+    subject.conclusion?.must_equal false
+  end
 end

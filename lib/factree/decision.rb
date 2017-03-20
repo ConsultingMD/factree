@@ -18,6 +18,10 @@ class Factree::Decision
     @decide.call(facts)
   end
 
+  def conclusion?
+    false
+  end
+
   def to_s
     "<Factree::Decision decide=#{@decide} required_facts=[#{required_facts.join(", ")}]>"
   end
