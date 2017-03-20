@@ -15,12 +15,24 @@ describe Factree::Decision do
 
   describe "#decide" do
     let(:facts) { :facts }
-    let(:decision) { :decision }
+    let(:decision) { Factree::Node.new }
+
+    before do
+      decide.expect(:call, decision, [facts])
+    end
 
     it "uses the supplied proc to decide on the next step" do
-      decide.expect(:call, decision, [facts])
       subject.decide(facts).must_equal decision
       decide.verify
+    end
+
+    describe "when something other than a Node is returned by the proc" do
+      let(:decision) { :not_a_node }
+
+      it "provides a useful error message" do
+        -> { subject.decide(facts) }.must_raise.message.must_be :=~,
+          %r|Factree::Decision failed to return a Decision or Conclusion from its decide proc at .*decision_test\.rb:\d+\. Returned: :not_a_node|
+      end
     end
   end
 
