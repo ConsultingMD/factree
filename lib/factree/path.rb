@@ -1,4 +1,10 @@
+require 'factree/pathfinder'
+
 class Factree::Path
+  def self.through(root, facts, finder: Factree::Pathfinder)
+    new(finder.find_node_sequence(root, facts))
+  end
+
   def initialize(node_sequence)
     @nodes = node_sequence.to_a.freeze
     freeze
@@ -16,5 +22,9 @@ class Factree::Path
 
   def required_facts
     [].concat(*@nodes.map(&:required_facts)).uniq
+  end
+
+  def ==(other_path)
+    @nodes == other_path.instance_variable_get(:@nodes)
   end
 end

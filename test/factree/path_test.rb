@@ -38,4 +38,15 @@ describe Factree::Path do
       subject.required_facts.must_equal %i[orbits_sun? sky_blue?]
     end
   end
+
+  describe ".through" do
+    it "has a convenient interface to use Pathfinder" do
+      finder = Minitest::Mock.new
+      root = :root
+      facts = :facts
+      finder.expect(:find_node_sequence, complete_node_sequence, [root, facts])
+      Factree::Path.through(root, facts, finder: finder).must_equal subject
+      finder.verify
+    end
+  end
 end
