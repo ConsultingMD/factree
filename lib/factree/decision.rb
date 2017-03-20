@@ -35,4 +35,10 @@ class Factree::Decision < Factree::Node
   def to_s
     "<Factree::Decision decide=#{@decide} required_facts=[#{required_facts.join(", ")}]>"
   end
+
+  def ==(other)
+    other.is_a?(self.class) &&
+      @required_facts == other.required_facts &&
+      @decide == other.instance_variable_get(:@decide)
+  end
 end

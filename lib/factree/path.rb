@@ -36,7 +36,8 @@ class Factree::Path
     [].concat(*@nodes.map(&:required_facts)).uniq
   end
 
-  def ==(other_path)
-    @nodes == other_path.instance_variable_get(:@nodes)
+  def ==(other)
+    other.is_a?(self.class) &&
+      @nodes == other.instance_variable_get(:@nodes)
   end
 end
