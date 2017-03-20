@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'factree/pathfinder'
 
 describe Factree::Pathfinder do
   describe "#find_node_sequence" do
