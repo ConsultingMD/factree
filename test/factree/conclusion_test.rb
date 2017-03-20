@@ -10,5 +10,15 @@ describe Factree::Conclusion do
   it "is a conclusion" do
     subject.conclusion?.must_equal true
   end
+
+  it "has no fact dependencies" do
+    subject.required_facts.must_equal []
+  end
+
+  describe "#to_s" do
+    it "prints out a useful representation for debugging" do
+      subject.to_s.must_be :=~, /<Factree::Conclusion value=:value>/
+    end
+  end
 end
 
