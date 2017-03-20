@@ -39,4 +39,10 @@ describe Factree::Decision do
       subject.required_facts.must_equal %i[fact_b fact_c fact_a]
     end
   end
+
+  describe "#to_s" do
+    it "prints out a useful representation for debugging" do
+      subject.to_s.must_be :=~, /<Factree::Decision decide=.*decision_test\.rb:\d+> required_facts=\[fact_b, fact_a\]>/
+    end
+  end
 end
