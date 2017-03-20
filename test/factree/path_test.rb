@@ -39,13 +39,13 @@ describe Factree::Path do
     end
   end
 
-  describe ".through" do
+  describe ".through_tree" do
     it "has a convenient interface to use Pathfinder" do
       finder = Minitest::Mock.new
       root = :root
       facts = :facts
       finder.expect(:find_node_sequence, complete_node_sequence, [root, facts])
-      Factree::Path.through(root, facts, finder: finder).must_equal subject
+      Factree::Path.through_tree(root, facts, finder: finder).must_equal subject
       finder.verify
     end
   end

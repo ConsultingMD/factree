@@ -1,7 +1,6 @@
 require 'factree/pathfinder'
 
 class Factree::Path
-  def self.through(root, facts, finder: Factree::Pathfinder)
     new(finder.find_node_sequence(root, facts))
   end
 
