@@ -1,1 +1,2 @@
 lib/**/*.rb - README.md
+--embed-mixin DSL
