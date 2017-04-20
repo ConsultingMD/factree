@@ -1,8 +1,6 @@
 # Factree
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/factree`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Factree provides a way to make choices based on a set of facts that are not yet known. It breaks the process down into individual decisions, each of which can lead to a number of other decisions, until finally a conclusion is reached -- something like a choose your own adventure novel. As each decision is made, the facts necessary to make the next decision are revealed.
 
 ## Installation
 
@@ -32,5 +30,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/factree.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jstrater/factree.
 
