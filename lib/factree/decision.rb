@@ -20,16 +20,7 @@ class Factree::Decision < Factree::Node
   # Use the provided facts to decide on the next step.
   # @return [Decision, Conclusion] The next node
   def decide(facts)
-    next_node = @decide.call(facts)
-
-    # Typechecking here because of the high likelihood that users will forget to return a Factree::Node subclass 100% of the time.
-    unless next_node.is_a? Factree::Node
-      raise "Factree::Decision failed to return a Decision or Conclusion " +
-        "from its decide proc at #{@decide.source_location.join(':')}. " +
-        "Returned: #{next_node.inspect}"
-    end
-
-    next_node
+    @decide.call(facts)
   end
 
   def to_s

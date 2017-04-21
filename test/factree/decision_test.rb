@@ -25,15 +25,6 @@ describe Factree::Decision do
       subject.decide(facts).must_equal decision
       decide.verify
     end
-
-    describe "when something other than a Node is returned by the proc" do
-      let(:decision) { :not_a_node }
-
-      it "provides a useful error message" do
-        -> { subject.decide(facts) }.must_raise.message.must_be :=~,
-          %r|Factree::Decision failed to return a Decision or Conclusion from its decide proc at .*decision_test\.rb:\d+\. Returned: :not_a_node|
-      end
-    end
   end
 
   it "has immutable required_facts" do

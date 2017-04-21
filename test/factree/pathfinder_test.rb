@@ -61,6 +61,14 @@ describe Factree::Pathfinder do
         -> { subject }.must_raise Factree::CycleError
       end
     end
+
+    describe "when a decision doesn't return a Node" do
+      let(:root) { Factree::Decision.new { nil } }
+
+      it "raises an error" do
+        -> { subject }.must_raise Factree::InvalidDecisionError
+      end
+    end
   end
 end
 
