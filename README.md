@@ -1,6 +1,6 @@
 # Factree
 
-Factree provides a way to make choices based on a set of facts that are not yet known. It breaks the process down into individual decisions, each of which can lead to a number of other decisions, until finally a conclusion is reached -- something like a choose your own adventure novel. As each decision is made, the facts necessary to make the next decision are revealed.
+Factree provides a way to make choices based on a set of facts that are not yet known. It breaks the process down into individual decisions, each of which can lead to a number of other decisions, until finally a conclusion is reached -- something like a choose your own adventure novel. As each decision is made, the facts necessary to make the next decision are identified.
 
 ## Installation
 
