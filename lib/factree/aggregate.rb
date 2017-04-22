@@ -15,12 +15,16 @@ module Factree::Aggregate
       remaining_alternatives = alternatives(*rest)
 
       return Factree::Decision.new first.required_facts do |facts|
-        first_result = first.decide(facts)
-
-        if first_result.nil?
-          remaining_alternatives
+        if first.conclusion?
+          first
         else
-          first_result
+          first_result = first.decide(facts)
+
+          if first_result.nil?
+            remaining_alternatives
+          else
+            first_result
+          end
         end
       end
     end

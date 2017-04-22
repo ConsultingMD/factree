@@ -11,7 +11,6 @@ describe Factree::Aggregate do
     end
 
     let(:conclusion) { Factree::Conclusion.new(:b) }
-    let(:facts) { {} }
 
     describe "with a nil decision followed by a final decision" do
       subject { Factree::Aggregate.alternatives(nil_decision, final_decision) }
@@ -21,7 +20,7 @@ describe Factree::Aggregate do
       end
 
       it "decides on conclusion in two steps" do
-        subject.decide(facts).decide(facts).must_equal conclusion
+        subject.decide.decide.must_equal conclusion
       end
     end
 
@@ -33,7 +32,19 @@ describe Factree::Aggregate do
       end
 
       it "decides on conclusion in one step" do
-        subject.decide(facts).must_equal conclusion
+        subject.decide.must_equal conclusion
+      end
+    end
+
+    describe "with a nil decision followed by a conclusion" do
+      subject { Factree::Aggregate.alternatives(nil_decision, conclusion) }
+
+      it "node for conclusion has no required_facts" do
+        subject.decide.required_facts.must_be :empty?
+      end
+
+      it "decides on conclusion in two steps" do
+        second_node.decide.must_equal conclusion
       end
     end
 
@@ -42,7 +53,7 @@ describe Factree::Aggregate do
 
       it "decides on nil in two steps" do
         # nil_decision decides nil, so we try the next decision, which is the nil decision at the end
-        subject.decide(facts).decide(facts).must_be_nil
+        subject.decide.decide.must_be_nil
       end
     end
 
@@ -50,7 +61,7 @@ describe Factree::Aggregate do
       subject { Factree::Aggregate.alternatives }
 
       it "returns a nil decision" do
-        subject.decide(facts).must_be_nil
+        subject.decide.must_be_nil
       end
     end
   end

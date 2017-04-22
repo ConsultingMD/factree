@@ -18,8 +18,9 @@ class Factree::Decision < Factree::Node
   end
 
   # Use the provided facts to decide on the next step.
+  #
   # @return [Decision, Conclusion] The next node
-  def decide(facts)
+  def decide(facts={})
     @decide.call(facts)
   end
 
