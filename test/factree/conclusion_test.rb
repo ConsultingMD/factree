@@ -20,5 +20,17 @@ describe Factree::Conclusion do
       subject.to_s.must_be :=~, /<Factree::Conclusion value=:value>/
     end
   end
+
+  describe "#to_decision" do
+    let(:decision) { subject.to_decision }
+
+    it "wraps itself in a decision" do
+      decision.decide.must_equal subject
+    end
+
+    it "doesn't pass on its required_facts" do
+      decision.required_facts.must_be_empty
+    end
+  end
 end
 

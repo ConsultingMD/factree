@@ -44,7 +44,7 @@ describe Factree::Aggregate do
       end
 
       it "decides on conclusion in two steps" do
-        second_node.decide.must_equal conclusion
+        subject.decide.decide.must_equal conclusion
       end
     end
 

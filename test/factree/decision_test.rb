@@ -49,6 +49,12 @@ describe Factree::Decision do
     end
   end
 
+  describe "#to_decision" do
+    it "returns itself" do
+      subject.to_decision.must_equal subject
+    end
+  end
+
   it "is not a conclusion" do
     subject.conclusion?.must_equal false
   end

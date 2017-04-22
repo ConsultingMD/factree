@@ -16,6 +16,10 @@ class Factree::Conclusion < Factree::Node
     "<Factree::Conclusion value=#{@value.inspect}>"
   end
 
+  def to_decision
+    Factree::Decision.new { self }
+  end
+
   def ==(other)
     other.is_a?(self.class) &&
       @value == other.instance_variable_get(:@value)
