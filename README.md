@@ -21,7 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+[API documentation](http://www.rubydoc.info/github/jstrater/factree/)
 
 ## Development
 
