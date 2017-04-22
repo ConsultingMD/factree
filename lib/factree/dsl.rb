@@ -1,6 +1,7 @@
 require 'factree/decision'
 require 'factree/conclusion'
 require 'factree/path'
+require 'factree/aggregate'
 
 # Readable shortcuts to common functions
 module Factree::DSL
@@ -15,5 +16,9 @@ module Factree::DSL
 
   def path(through:, given: {})
     Factree::Path.through_tree(through, given)
+  end
+
+  def decision_with_alternatives(*decisions)
+    Factree::Aggregate.alternatives(*decisions)
   end
 end
