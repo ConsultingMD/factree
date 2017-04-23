@@ -4,15 +4,12 @@ require 'factree/pathfinder'
 #
 # A path may or may not actually reach a conclusion. If it does, it will be {complete?} and return the {conclusion} value. If it doesn't, then you can get the names of all of the facts needed to get past the next decision from {required_facts}.
 class Factree::Path
-  # Uses the given set of facts to find a path through the tree. The path will go as far as possible, and it will only stop when a conclusion is reached or when it doesn't have all the facts needed to make a decision.
-  # @param [Factree::Decision, Factree::Conclusion] root The root node of the tree
-  # @param [Hash] facts The set of facts used to make decisions
-  # @return [Factree::Path]
+  # @see DSL.path
   def self.through_tree(root, facts, finder: Factree::Pathfinder)
     new(finder.find_node_sequence(root, facts))
   end
 
-  # Want to create a path? Use {.through_tree} instead.
+  # Want to create a path? Use {DSL.path} instead.
   def initialize(node_sequence)
     @nodes = node_sequence.to_a.freeze
     freeze
