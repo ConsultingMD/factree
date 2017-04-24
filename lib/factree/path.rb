@@ -28,9 +28,10 @@ class Factree::Path
   end
 
   # A list of the facts required to make all of the decisions along the path, including the last one. If the path is not complete, then the facts in this list are sufficient to progress to the next node.
+  #
   # @return [Array<Symbol>] A list of fact names in the order they're required in the tree
   def required_facts
-    [].concat(*@nodes.map(&:required_facts)).uniq
+    [@nodes.map(&:required_facts)].flatten.uniq
   end
 
   def ==(other)
