@@ -47,7 +47,7 @@ describe Factree::DSL do
 
   describe "#decision_with_alternatives" do
     it "creates a decision from a list of alternatives" do
-      subject.decision_with_alternatives().decide(nil).must_be_nil
+      subject.decision_with_alternatives().decide.must_be_nil
     end
   end
 end

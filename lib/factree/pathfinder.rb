@@ -5,7 +5,9 @@ module Factree
   # @api private
   module Pathfinder
     # Returns the sequence of nodes for the furthest path possible from the given node with the given set of facts.
-    def self.find_node_sequence(node, facts, visited=Set.new)
+    def self.find_node_sequence(node, raw_facts, visited=Set.new)
+      facts = Factree::Facts.coerce(raw_facts)
+
       # No cycles allowed
       if visited.include? node
         raise Factree::CycleError,
@@ -28,7 +30,7 @@ module Factree
     private_class_method def self.type_check_next_node(source_node, next_node)
       unless next_node.is_a? Factree::Node
         raise Factree::InvalidDecisionError,
-          "Expected #{source_node} to return a Factree::Node" +
+          "Expected #{source_node} to return a Factree::Node " +
           "from #decide. Got: #{next_node.inspect}"
       end
     end

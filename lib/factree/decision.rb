@@ -1,4 +1,5 @@
 require 'factree/node'
+require 'factree/facts'
 
 # A Decision is a single node in a decision tree. It's responsible for choosing the next node based on the given set of facts.
 class Factree::Decision < Factree::Node
@@ -18,7 +19,8 @@ class Factree::Decision < Factree::Node
   # Use the provided facts to decide on the next step.
   #
   # @return [Decision, Conclusion] The next node
-  def decide(facts={})
+  def decide(raw_facts={})
+    facts = Factree::Facts.coerce raw_facts
     @decide.call(facts)
   end
 

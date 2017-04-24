@@ -49,4 +49,8 @@ describe Factree::Facts do
       subject.wont_equal(foo: :bar)
     end
   end
+
+  it "gets keys from the hash" do
+    subject.keys.must_equal params.keys
+  end
 end

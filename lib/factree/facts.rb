@@ -1,4 +1,13 @@
+require 'forwardable'
+
 class Factree::Facts
+  extend Forwardable
+  def_delegators :@hash,
+    :[],
+    :to_h,
+    :to_hash,
+    :keys
+
   def self.coerce(source)
     return source if source.is_a? self
     new(**source)
@@ -9,17 +18,7 @@ class Factree::Facts
     freeze
   end
 
-  def [](fact_name)
-    @hash[fact_name]
-  end
-
   def ==(other)
     self.to_h == other.to_h
   end
-
-  def to_h
-    @hash
-  end
-
-  alias to_hash to_h
 end

@@ -14,15 +14,20 @@ describe Factree::Decision do
   end
 
   describe "#decide" do
-    let(:facts) { :facts }
+    let(:facts) { { foo: :bar } }
     let(:decision) { Factree::Node.new }
 
-    before do
+    it "uses the supplied proc to decide on the next step" do
       decide.expect(:call, decision, [facts])
+      subject.decide(facts).must_equal decision
+      decide.verify
     end
 
-    it "uses the supplied proc to decide on the next step" do
-      subject.decide(facts).must_equal decision
+    it "coerces its argument to Facts" do
+      decide.expect(:call, nil) do |facts|
+        facts.must_be_kind_of Factree::Facts
+      end
+      subject.decide(facts)
       decide.verify
     end
   end

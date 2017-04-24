@@ -69,6 +69,19 @@ describe Factree::Pathfinder do
         -> { subject }.must_raise Factree::InvalidDecisionError
       end
     end
+
+    describe "with a fact-checking decision" do
+      let(:root) do
+        Factree::Decision.new do |facts|
+          facts.must_be_kind_of Factree::Facts
+          Factree::Conclusion.new nil
+        end
+      end
+
+      it "coerces raw_facts into Facts" do
+        subject
+      end
+    end
   end
 end
 
