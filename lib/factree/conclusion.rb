@@ -1,6 +1,4 @@
-require 'factree/node'
-
-class Factree::Conclusion < Factree::Node
+class Factree::Conclusion
   attr_reader :value
 
   def initialize(value)
@@ -8,20 +6,8 @@ class Factree::Conclusion < Factree::Node
     freeze
   end
 
-  def conclusion?
-    true
-  end
-
-  def to_s
-    "<Factree::Conclusion value=#{@value.inspect}>"
-  end
-
-  def to_decision
-    Factree::Decision.new { self }
-  end
-
   def ==(other)
-    other.is_a?(self.class) &&
+    self.class == other.class &&
       @value == other.instance_variable_get(:@value)
   end
 end

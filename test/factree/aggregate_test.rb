@@ -1,67 +1,50 @@
 require 'test_helper'
 
 describe Factree::Aggregate do
-  describe "alternatives" do
-    let(:nil_decision) do
-      Factree::Decision.new([:fact_a]) { nil }
-    end
-
-    let(:final_decision) do
-      Factree::Decision.new([:fact_b]) { conclusion }
-    end
-
+  describe ".alternatives" do
+    let(:facts) { :facts }
+    let(:nil_decision) { -> (_) { nil } }
+    let(:final_decision) { -> (_) { conclusion } }
     let(:conclusion) { Factree::Conclusion.new(:b) }
+    let(:decisions) { [] }
+    subject { Factree::Aggregate.alternatives(facts, *decisions) }
 
     describe "with a nil decision followed by a final decision" do
-      subject { Factree::Aggregate.alternatives(nil_decision, final_decision) }
+      let(:decisions) { [nil_decision, final_decision] }
 
-      it "has the nil decision's required_facts" do
-        subject.required_facts.must_equal nil_decision.required_facts
-      end
-
-      it "decides on conclusion in two steps" do
-        subject.decide.decide.must_equal conclusion
+      it "decides on conclusion" do
+        subject.must_equal conclusion
       end
     end
 
     describe "with a final decision followed by a nil decision" do
-      subject { Factree::Aggregate.alternatives(final_decision, nil_decision) }
+      let(:decisions) { [final_decision, nil_decision] }
 
-      it "has the final decision's required_facts" do
-        subject.required_facts.must_equal final_decision.required_facts
-      end
-
-      it "decides on conclusion in one step" do
-        subject.decide.must_equal conclusion
-      end
-    end
-
-    describe "with a nil decision followed by a conclusion" do
-      subject { Factree::Aggregate.alternatives(nil_decision, conclusion) }
-
-      it "node for conclusion has no required_facts" do
-        subject.decide.required_facts.must_be :empty?
-      end
-
-      it "decides on conclusion in two steps" do
-        subject.decide.decide.must_equal conclusion
+      it "decides on conclusion" do
+        subject.must_equal conclusion
       end
     end
 
     describe "with only a nil decision" do
-      subject { Factree::Aggregate.alternatives(nil_decision) }
+      let(:decisions) { [nil_decision] }
 
-      it "decides on nil in two steps" do
-        # nil_decision decides nil, so we try the next decision, which is the nil decision at the end
-        subject.decide.decide.must_be_nil
+      it "decides on nil" do
+        subject.must_be_nil
       end
     end
 
-    describe "without any decisions" do
-      subject { Factree::Aggregate.alternatives }
+    it "returns a nil decision" do
+      subject.must_be_nil
+    end
 
-      it "returns a nil decision" do
-        subject.decide.must_be_nil
+    describe "with a mock decision" do
+      let(:mock_decision) { Minitest::Mock.new }
+      let(:decisions) { [mock_decision] }
+
+      it "passes facts through to decision procs" do
+        mock_decision.expect(:call, nil, [facts])
+        subject
+        mock_decision.verify
       end
     end
   end

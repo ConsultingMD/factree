@@ -1,37 +1,28 @@
-module Factree
-  CycleError = Class.new(StandardError)
-  InvalidDecisionError = Class.new(StandardError)
+require 'factree/path'
 
-  # @api private
+module Factree
+  # Raised when a decision proc fails to return a Conclusion as expected
+  InvalidConclusionError = Class.new(StandardError)
+
   module Pathfinder
-    # Returns the sequence of nodes for the furthest path possible from the given node with the given set of facts.
-    def self.find_node_sequence(node, raw_facts, visited=Set.new)
+    # @see DSL.find_path
+    def self.find(raw_facts, &decide)
       facts = Factree::Facts.coerce(raw_facts)
 
-      # No cycles allowed
-      if visited.include? node
-        raise Factree::CycleError,
-          "Cycle detected in decision tree. Node appeared twice: #{node}"
+      conclusion = nil
+      missing_facts = Factree::Facts.catch_missing_facts do
+        conclusion = decide.call(facts)
+        type_check_conclusion conclusion, &decide
       end
 
-      # Base case: leaf node (conclusion)
-      return [node] if node.conclusion?
-
-      # Base case: not enough facts to call node.decide
-      missing_facts = node.required_facts - facts.keys
-      return [node] unless missing_facts.empty?
-
-      # Recursive case: return full path by prepending this node to the rest
-      next_node = node.decide(facts)
-      type_check_next_node(node, next_node)
-      return [node] + find_node_sequence(next_node, facts, visited + [node])
+      Factree::Path.new(missing_facts, conclusion)
     end
 
-    private_class_method def self.type_check_next_node(source_node, next_node)
-      unless next_node.is_a? Factree::Node
-        raise Factree::InvalidDecisionError,
-          "Expected #{source_node} to return a Factree::Node " +
-          "from #decide. Got: #{next_node.inspect}"
+    private_class_method def self.type_check_conclusion(conclusion, &decide)
+      unless conclusion.is_a? Factree::Conclusion
+        raise Factree::InvalidConclusionError,
+          "Expected #{decide.inspect} to return a Factree::Conclusion. " +
+          "Got #{conclusion.inspect}"
       end
     end
   end

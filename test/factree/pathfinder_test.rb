@@ -10,34 +10,34 @@ describe Factree::Pathfinder do
       }
     end
 
-    let(:root) do
-      Factree::Decision.new([:lives_in_trash_can?]) do |facts|
-        if facts[:lives_in_trash_can?]
-          Factree::Conclusion.new(:oscar)
-        else
-          unibrow_decision
-        end
+    def root(facts)
+      facts.require :lives_in_trash_can?
+
+      if facts[:lives_in_trash_can?]
+        Factree::Conclusion.new(:oscar)
+      else
+        unibrow_decision(facts)
       end
     end
 
-    let(:unibrow_decision) do
-      Factree::Decision.new([:has_unibrow?]) do |facts|
-        if facts[:has_unibrow?]
-          Factree::Conclusion.new(:bert)
-        else
-          Factree::Conclusion.new(:ernie)
-        end
+    def unibrow_decision(facts)
+      if facts[:has_unibrow?]
+        Factree::Conclusion.new(:bert)
+      else
+        Factree::Conclusion.new(:ernie)
       end
     end
 
-    subject { Factree::Pathfinder.find_node_sequence root, facts }
+    let(:root_proc) { method :root }
+    subject { Factree::Pathfinder.find facts, &root_proc }
 
-    it "starts at the root" do
-      subject.first.must_equal root
+    it "knows all of the facts that were required along the way" do
+      skip "Pathfinder only finds missing facts ATM"
+      subject.required_facts.must_equal [:has_unibrow?, :lives_in_trash_can?]
     end
 
     it "keeps going until it reaches a conclusion" do
-      subject.last.conclusion?.must_equal true
+      subject.complete?.must_equal true
     end
 
     describe "when there are not enough facts to reach a conclusion" do
@@ -45,41 +45,16 @@ describe Factree::Pathfinder do
         { lives_in_trash_can?: false }
       end
 
-      it "stops when it encounters the decision that needs more facts" do
-        subject.last.must_equal unibrow_decision
-      end
-    end
-
-    describe "with a cycle in the tree" do
-      let(:root) do
-        decision = Factree::Decision.new() do |facts|
-          decision
-        end
-      end
-
-      it "raises an error" do
-        -> { subject }.must_raise Factree::CycleError
+      it "knows what facts are needed to make the next decision" do
+        subject.required_facts.must_include :has_unibrow?
       end
     end
 
     describe "when a decision doesn't return a Node" do
-      let(:root) { Factree::Decision.new { nil } }
+      let(:root_proc) { -> (_) { nil } }
 
       it "raises an error" do
-        -> { subject }.must_raise Factree::InvalidDecisionError
-      end
-    end
-
-    describe "with a fact-checking decision" do
-      let(:root) do
-        Factree::Decision.new do |facts|
-          facts.must_be_kind_of Factree::Facts
-          Factree::Conclusion.new nil
-        end
-      end
-
-      it "coerces raw_facts into Facts" do
-        subject
+        -> { subject }.must_raise Factree::InvalidConclusionError
       end
     end
   end

@@ -18,9 +18,13 @@ class Factree::Facts
     freeze
   end
 
+  def known?(fact_name)
+    @hash.has_key? fact_name
+  end
+
   def require(*fact_names)
     missing_facts = fact_names.uniq.select do |fact_name|
-      !@hash.has_key? fact_name
+      !known? fact_name
     end
 
     self.class.throw_missing_facts(*missing_facts) unless missing_facts.empty?
