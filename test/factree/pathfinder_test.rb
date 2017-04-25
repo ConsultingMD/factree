@@ -32,8 +32,7 @@ describe Factree::Pathfinder do
     subject { Factree::Pathfinder.find facts, &root_proc }
 
     it "knows all of the facts that were required along the way" do
-      skip "Pathfinder only finds missing facts ATM"
-      subject.required_facts.must_equal [:has_unibrow?, :lives_in_trash_can?]
+      subject.required_facts.must_equal [:lives_in_trash_can?, :has_unibrow?]
     end
 
     it "keeps going until it reaches a conclusion" do

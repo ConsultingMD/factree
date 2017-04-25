@@ -12,11 +12,27 @@ describe Factree::FactsSpy do
     end
   end
 
+  before do
+    listener.expect(:before_require, nil, [:foo])
+  end
+
+  after do
+    listener.verify
+  end
+
   describe "#require" do
     it "notifies the listener" do
-      listener.expect(:before_require, nil, [:foo])
       subject.require(:foo)
-      listener.verify
+    end
+  end
+
+  describe "#[]" do
+    it "notifies the listener" do
+      subject[:foo]
+    end
+
+    it "returns the fact value" do
+      subject[:foo].must_equal :bar
     end
   end
 end

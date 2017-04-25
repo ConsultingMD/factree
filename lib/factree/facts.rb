@@ -5,7 +5,6 @@ class Factree::Facts
   def_delegators :@hash,
     :[],
     :to_h,
-    :to_hash,
     :keys
 
   def self.coerce(source)
@@ -40,13 +39,12 @@ class Factree::Facts
   end
 
   def self.throw_missing_facts(*facts)
-    throw MISSING_FACTS, facts.to_a.freeze
+    throw MISSING_FACTS
   end
 
   def self.catch_missing_facts
     catch(MISSING_FACTS) do
       yield
-      []
     end
   end
 

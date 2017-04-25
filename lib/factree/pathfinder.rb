@@ -7,15 +7,19 @@ module Factree
   module Pathfinder
     # @see DSL.find_path
     def self.find(raw_facts, &decide)
-      facts = Factree::Facts.coerce(raw_facts)
-
-      conclusion = nil
-      missing_facts = Factree::Facts.catch_missing_facts do
-        conclusion = decide.call(facts)
-        type_check_conclusion conclusion, &decide
+      facts_without_spy = Factree::Facts.coerce(raw_facts)
+      required_facts = []
+      facts = Factree::FactsSpy.new(facts_without_spy) do |*fact_names|
+        required_facts += fact_names
       end
 
-      Factree::Path.new(missing_facts, conclusion)
+      conclusion = Factree::Facts.catch_missing_facts do
+        conclusion = decide.call(facts)
+        type_check_conclusion conclusion, &decide
+        conclusion
+      end
+
+      Factree::Path.new(required_facts.uniq, conclusion)
     end
 
     private_class_method def self.type_check_conclusion(conclusion, &decide)

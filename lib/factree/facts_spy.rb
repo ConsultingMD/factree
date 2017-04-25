@@ -13,4 +13,9 @@ class Factree::FactsSpy < SimpleDelegator
     @before_require.call(*fact_names)
     super
   end
+
+  def [](fact_name)
+    @before_require.call(fact_name)
+    super
+  end
 end

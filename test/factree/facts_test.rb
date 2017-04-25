@@ -22,19 +22,14 @@ describe Factree::Facts do
     it "throws MISSING_FACTS if facts are missing" do
       -> { subject[:bogus] }.must_throw Factree::Facts::MISSING_FACTS
     end
-
-    it "includes fact names when it throws MISSING_FACTS" do
-      catch(Factree::Facts::MISSING_FACTS) {
-        subject[:bogus]
-      }.must_equal [:bogus]
-    end
   end
 
   describe "#require" do
-    it "throws missing facts with all of the missing keys" do
+    it "throws when missing facts" do
       Factree::Facts.catch_missing_facts {
         subject.require(:in_a_house?, :with_a_fox?, :with_a_mouse?)
-      }.must_equal [:in_a_house?, :with_a_mouse?]
+        :not_nil
+      }.must_be_nil
     end
 
     it "does nothing if the facts are all present" do
@@ -43,22 +38,16 @@ describe Factree::Facts do
   end
 
   describe ".catch_missing_facts" do
-    it "returns empty missing_facts if nothing's missing" do
-      Factree::Facts.catch_missing_facts{}.must_equal []
-    end
-
     it "executes the block if nothing's missing" do
-      result = nil
-      Factree::Facts.catch_missing_facts do
-        result = :result
-      end
-      result.must_equal :result
+      Factree::Facts.catch_missing_facts {
+        :result
+      }.must_equal :result
     end
 
-    it "returns a list of missing_facts if something's missing" do
+    it "returns nil if something's missing" do
       Factree::Facts.catch_missing_facts {
         subject[:bogus]
-      }.must_equal [:bogus]
+      }.must_be_nil
     end
   end
 
@@ -84,7 +73,7 @@ describe Factree::Facts do
 
   describe "#==" do
     it "is true if the #to_h results are equal" do
-      subject.must_equal params
+      params.must_equal subject
     end
 
     it "is false if #to_h results are not equal" do
