@@ -33,12 +33,10 @@ class Factree::Facts
   end
 
   def self.catch_missing_facts
-    result = nil
-    missing_facts = catch(MISSING_FACTS) do
-      result = yield
+    catch(MISSING_FACTS) do
+      yield
       []
     end
-    [result, missing_facts]
   end
 
   # Kernel#catch uses object ID to match thrown values. This gives us a unique

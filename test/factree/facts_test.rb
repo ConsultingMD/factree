@@ -32,31 +32,21 @@ describe Factree::Facts do
 
   describe ".catch_missing_facts" do
     it "returns empty missing_facts if nothing's missing" do
-      _result, missing_facts = Factree::Facts.catch_missing_facts do
-      end
-      missing_facts.must_equal []
+      Factree::Facts.catch_missing_facts{}.must_equal []
     end
 
-    it "returns the block's value if nothing's missing" do
-      result, _missing_facts = Factree::Facts.catch_missing_facts do
-        :result
+    it "executes the block if nothing's missing" do
+      result = nil
+      Factree::Facts.catch_missing_facts do
+        result = :result
       end
       result.must_equal :result
     end
 
     it "returns a list of missing_facts if something's missing" do
-      _result, missing_facts = Factree::Facts.catch_missing_facts do
+      Factree::Facts.catch_missing_facts {
         subject[:bogus]
-      end
-      missing_facts.must_equal [:bogus]
-    end
-
-    it "returns a nil result if something's missing" do
-      result, _missing_facts = Factree::Facts.catch_missing_facts do
-        subject[:bogus]
-        :ignored_result
-      end
-      result.must_be_nil
+      }.must_equal [:bogus]
     end
   end
 
