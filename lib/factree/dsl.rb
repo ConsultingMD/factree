@@ -9,7 +9,7 @@ module Factree::DSL
   # The conclusion has an associated value (can be anything.)
   #
   # @param [Object] value Any value, including nil
-  # @return [Decision]
+  # @return [Conclusion]
   def conclusion(value=nil)
     Factree::Conclusion.new(value)
   end
@@ -31,7 +31,7 @@ module Factree::DSL
     Factree::Pathfinder.find(facts, &decide)
   end
 
-  # A tool for composing lists of decision procs to be tried one after another until a conclusion is reached. When a proc returns nil instead of a {Node}, the next node in {decisions} is used instead.
+  # A tool for composing lists of decision procs to be tried one after another until a conclusion is reached. When a proc returns nil instead of a {Conclusion}, the next proc in decide_procs is used instead.
   #
   # If the last decision proc is reached and it returns nil, then this method returns nil.
   #
