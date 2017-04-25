@@ -32,6 +32,15 @@ class Factree::Facts
     throw MISSING_FACTS, facts.to_a.freeze
   end
 
+  def self.catch_missing_facts
+    result = nil
+    missing_facts = catch(MISSING_FACTS) do
+      result = yield
+      []
+    end
+    [result, missing_facts]
+  end
+
   # Kernel#catch uses object ID to match thrown values. This gives us a unique
   # ID and a readable message in case it's thrown somewhere it's not expected.
   MISSING_FACTS = "Attempted to read missing facts from a Factree::Facts instance"
