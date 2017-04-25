@@ -22,11 +22,7 @@ class Factree::Facts
   end
 
   def require(*fact_names)
-    missing_facts = fact_names.uniq.select do |fact_name|
-      !known? fact_name
-    end
-
-    self.class.throw_missing_facts(*missing_facts) unless missing_facts.empty?
+    self.class.throw_missing_facts unless fact_names.all? { |name| known? name }
   end
 
   def [](fact_name)
@@ -38,7 +34,7 @@ class Factree::Facts
     self.to_h == other.to_h
   end
 
-  def self.throw_missing_facts(*facts)
+  def self.throw_missing_facts
     throw MISSING_FACTS
   end
 
