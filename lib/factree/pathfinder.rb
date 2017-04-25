@@ -4,6 +4,7 @@ module Factree
   # Raised when a decision proc fails to return a Conclusion as expected
   InvalidConclusionError = Class.new(StandardError)
 
+  # @api private
   module Pathfinder
     # @see DSL.find_path
     def self.find(raw_facts, &decide)

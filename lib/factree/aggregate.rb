@@ -1,3 +1,4 @@
+# @api private
 module Factree::Aggregate
   # @see DSL.decide_between_alternatives
   def self.alternatives(facts, *decide_procs)

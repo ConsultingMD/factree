@@ -2,11 +2,13 @@ module Factree
   # Raised when attempting to get a conclusion from an incomplete path
   NoConclusionError = Class.new(StandardError)
 
-  # Paths follow a sequence of nodes from the root of a decision tree toward a conclusion. Use {Path.through_tree} to find a path through a tree.
+  # {Path}s record useful information about an attempt to reach a {Conclusion} for a decision proc.
   #
-  # A path may or may not actually reach a conclusion. If it does, it will be {complete?} and return the {conclusion} value. If it doesn't, then you can get the names of all of the facts needed to get past the next decision from {required_facts}.
+  # A path may or may not actually reach a conclusion. If it does, it will be {complete?} and return the {conclusion} value. If it doesn't, then you can get the names of all of the facts needed to get past the next decision step from {required_facts}.
   class Path
-    # Want to create a path? Use {DSL.path} instead.
+    # Want to create a path? Use {DSL.find_path} instead.
+    #
+    # @api private
     def initialize(required_facts=[], conclusion=nil)
       @required_facts = required_facts.to_a.uniq
       @conclusion = conclusion

@@ -1,6 +1,7 @@
 require 'delegate'
 
 # {Facts} decorator to spy on calls to {Facts#require}
+# @api private
 class Factree::FactsSpy < SimpleDelegator
   def initialize(facts, &before_require)
     @facts = facts
