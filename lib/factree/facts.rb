@@ -18,10 +18,17 @@ class Factree::Facts
     freeze
   end
 
-  def [](fact_name)
-    @hash.fetch(fact_name) do
-      self.class.throw_missing_facts(fact_name)
+  def require(*fact_names)
+    missing_facts = fact_names.uniq.select do |fact_name|
+      !@hash.has_key? fact_name
     end
+
+    self.class.throw_missing_facts(*missing_facts) unless missing_facts.empty?
+  end
+
+  def [](fact_name)
+    self.require(fact_name)
+    @hash[fact_name]
   end
 
   def ==(other)

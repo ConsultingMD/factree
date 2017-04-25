@@ -30,6 +30,18 @@ describe Factree::Facts do
     end
   end
 
+  describe "#require" do
+    it "throws missing facts with all of the missing keys" do
+      Factree::Facts.catch_missing_facts {
+        subject.require(:in_a_house?, :with_a_fox?, :with_a_mouse?)
+      }.must_equal [:in_a_house?, :with_a_mouse?]
+    end
+
+    it "does nothing if the facts are all present" do
+      subject.require :with_a_fox?
+    end
+  end
+
   describe ".catch_missing_facts" do
     it "returns empty missing_facts if nothing's missing" do
       Factree::Facts.catch_missing_facts{}.must_equal []
