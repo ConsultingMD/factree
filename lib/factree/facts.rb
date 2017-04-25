@@ -18,7 +18,21 @@ class Factree::Facts
     freeze
   end
 
+  def [](fact_name)
+    @hash.fetch(fact_name) do
+      self.class.throw_missing_facts(fact_name)
+    end
+  end
+
   def ==(other)
     self.to_h == other.to_h
   end
+
+  def self.throw_missing_facts(*facts)
+    throw MISSING_FACTS, facts.to_a.freeze
+  end
+
+  # Kernel#catch uses object ID to match thrown values. This gives us a unique
+  # ID and a readable message in case it's thrown somewhere it's not expected.
+  MISSING_FACTS = "Attempted to read missing facts from a Factree::Facts instance"
 end

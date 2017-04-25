@@ -18,6 +18,16 @@ describe Factree::Facts do
     it "looks in the hash" do
       subject[:with_a_fox?].must_equal true
     end
+
+    it "throws MISSING_FACTS if facts are missing" do
+      -> { subject[:bogus] }.must_throw Factree::Facts::MISSING_FACTS
+    end
+
+    it "includes fact names when it throws MISSING_FACTS" do
+      catch(Factree::Facts::MISSING_FACTS) {
+        subject[:bogus]
+      }.must_equal [:bogus]
+    end
   end
 
   describe "#to_h" do
