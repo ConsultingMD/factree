@@ -1,4 +1,6 @@
 require 'factree/path'
+require 'factree/facts'
+require 'factree/facts_spy'
 
 module Factree
   # Raised when a decision proc fails to return a Conclusion as expected

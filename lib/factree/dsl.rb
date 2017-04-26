@@ -1,5 +1,5 @@
 require 'factree/conclusion'
-require 'factree/path'
+require 'factree/pathfinder'
 require 'factree/aggregate'
 
 # Readable shortcuts to common functions.
