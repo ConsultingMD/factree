@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "factree"
   spec.version       = Factree::VERSION
   spec.authors       = ["Josh Strater"]
-  spec.email         = ["jstrater@gmail.com"]
+  spec.email         = ["josh.strater@grandrounds.com"]
 
   spec.summary       = %q{Decision trees that request facts as needed}
-  spec.homepage      = "https://github.com/jstrater/factree"
+  spec.homepage      = "https://github.com/ConsultingMD/factree"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

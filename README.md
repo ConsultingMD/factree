@@ -1,6 +1,6 @@
 # Factree
 [![Gem Version](https://badge.fury.io/rb/factree.svg)](https://rubygems.org/gems/factree)
-[![Build Status](https://travis-ci.org/jstrater/factree.svg?branch=master)](https://travis-ci.org/jstrater/factree)
+[![Build Status](https://travis-ci.org/ConsultingMD/factree.svg?branch=master)](https://travis-ci.org/ConsultingMD/factree)
 
 Factree provides tools for making choices based on a set of facts that are not yet known. You write a decision function that takes a set facts and returns a conclusion. Factree will run your function and make sure it has all of the facts it needs to complete. If it doesn't, then Factree will tell you what's needed to continue.
 
@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-[API documentation](http://www.rubydoc.info/github/jstrater/factree/)
+[API documentation](http://www.rubydoc.info/gems/factree)
 
 ## Development
 
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jstrater/factree.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ConsultingMD/factree.
 
 ## License
 
