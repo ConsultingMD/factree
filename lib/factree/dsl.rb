@@ -1,7 +1,3 @@
-require 'factree/conclusion'
-require 'factree/pathfinder'
-require 'factree/aggregate'
-
 # Readable shortcuts to common functions.
 module Factree::DSL
   # Creates a {Conclusion} to return from a decision proc.

@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'factree/facts'
 
 describe Factree::Facts do
   let(:params) do

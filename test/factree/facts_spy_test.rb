@@ -1,6 +1,4 @@
 require 'test_helper'
-require 'factree/facts'
-require 'factree/facts_spy'
 
 describe Factree::FactsSpy do
   let(:params) { { foo: :bar } }
