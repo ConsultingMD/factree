@@ -10,25 +10,25 @@ describe Factree::Facts do
   subject { Factree::Facts.new(**params) }
 
   it "is a tasty frozen treat" do
-    subject.must_be :frozen?
+    assert subject.frozen?
   end
 
   describe '#[]' do
     it "looks in the hash" do
-      subject[:with_a_fox?].must_equal true
+      assert_equal :in_a_box, subject[:location]
     end
 
     it "throws MISSING_FACTS if facts are missing" do
-      -> { subject[:bogus] }.must_throw Factree::Facts::MISSING_FACTS
+      assert_throws(Factree::Facts::MISSING_FACTS) { subject[:bogus] }
     end
   end
 
   describe "#require" do
     it "throws when missing facts" do
-      Factree::Facts.catch_missing_facts {
+      assert_nil(Factree::Facts.catch_missing_facts {
         subject.require(:in_a_house?, :with_a_fox?, :with_a_mouse?)
         :not_nil
-      }.must_be_nil
+      })
     end
 
     it "does nothing if the facts are all present" do
@@ -38,49 +38,45 @@ describe Factree::Facts do
 
   describe ".catch_missing_facts" do
     it "executes the block if nothing's missing" do
-      Factree::Facts.catch_missing_facts {
-        :result
-      }.must_equal :result
+      assert_equal :result, Factree::Facts.catch_missing_facts { :result }
     end
 
     it "returns nil if something's missing" do
-      Factree::Facts.catch_missing_facts {
-        subject[:bogus]
-      }.must_be_nil
+      assert_nil Factree::Facts.catch_missing_facts { subject[:bogus] }
     end
   end
 
   describe "#to_h" do
     it "returns exactly what was passed to #new" do
-      subject.to_h.must_equal params
+      assert_equal params, subject.to_h
     end
 
     it "is a tasty frozen treat" do
-      subject.to_h.must_be :frozen?
+      assert subject.to_h.frozen?
     end
   end
 
   describe ".coerce" do
     it "doesn't mess with a source that's already a Facts instance" do
-      Factree::Facts.coerce(subject).must_be_same_as subject
+      assert_same subject, Factree::Facts.coerce(subject)
     end
 
     it "converts a Hash to Facts" do
-      Factree::Facts.coerce(params).must_equal subject
+      assert_equal subject, Factree::Facts.coerce(params)
     end
   end
 
   describe "#==" do
     it "is true if the #to_h results are equal" do
-      params.must_equal subject
+      assert_equal subject, params
     end
 
     it "is false if #to_h results are not equal" do
-      subject.wont_equal(foo: :bar)
+      refute_equal({ foo: :bar }, subject)
     end
   end
 
   it "gets keys from the hash" do
-    subject.keys.must_equal params.keys
+    assert_equal params.keys, subject.keys
   end
 end

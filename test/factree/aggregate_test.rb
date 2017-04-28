@@ -13,7 +13,7 @@ describe Factree::Aggregate do
       let(:decisions) { [nil_decision, final_decision] }
 
       it "decides on conclusion" do
-        subject.must_equal conclusion
+        assert_equal subject, conclusion
       end
     end
 
@@ -21,7 +21,7 @@ describe Factree::Aggregate do
       let(:decisions) { [final_decision, nil_decision] }
 
       it "decides on conclusion" do
-        subject.must_equal conclusion
+        assert_equal subject, conclusion
       end
     end
 
@@ -29,12 +29,12 @@ describe Factree::Aggregate do
       let(:decisions) { [nil_decision] }
 
       it "decides on nil" do
-        subject.must_be_nil
+        assert_nil subject
       end
     end
 
     it "returns a nil decision" do
-      subject.must_be_nil
+      assert_nil subject
     end
 
     describe "with a mock decision" do

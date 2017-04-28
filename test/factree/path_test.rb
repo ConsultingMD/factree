@@ -6,44 +6,44 @@ describe Factree::Path do
   subject { Factree::Path.new required_facts, conclusion }
 
   it "is complete" do
-    subject.complete?.must_equal true
+    assert subject.complete?
   end
 
   it "has a conclusion" do
-    subject.conclusion.must_equal :my_conclusion
+    assert_equal :my_conclusion, subject.conclusion
   end
 
   it "has required facts" do
-    subject.required_facts.must_equal required_facts
+    assert_equal required_facts, subject.required_facts
   end
 
   describe "when the path doesn't end with a conclusion" do
     let(:conclusion) { nil }
 
     it "is incomplete" do
-      subject.complete?.must_equal false
+      refute subject.complete?
     end
 
     it "has no conclusion" do
-      -> { subject.conclusion }.must_raise Factree::NoConclusionError
+      assert_raises(Factree::NoConclusionError) { subject.conclusion }
     end
 
     it "knows the facts needed to progress" do
-      subject.required_facts.must_equal %i[orbits_sun? sky_blue?]
+      assert_equal %i[orbits_sun? sky_blue?], subject.required_facts
     end
   end
 
   describe "#==" do
     it "is not equal if the conclusion differs" do
-      subject.wont_equal Factree::Path.new(required_facts)
+      refute_equal Factree::Path.new(required_facts), subject
     end
 
     it "is not equal if the required_facts are different" do
-      subject.wont_equal Factree::Path.new([], conclusion)
+      refute_equal Factree::Path.new([], conclusion), subject
     end
 
     it "is equal if the required_facts and conclusion are the same" do
-      subject.must_equal Factree::Path.new(required_facts, conclusion)
+      assert_equal Factree::Path.new(required_facts, conclusion), subject
     end
   end
 end

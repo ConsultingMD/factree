@@ -8,7 +8,7 @@ describe Factree::DSL do
     let(:conclusion) { Factree::Conclusion.new conclusion_value }
 
     it "creates a Conclusion" do
-      subject.conclusion(conclusion_value).must_equal conclusion
+      assert_equal conclusion, subject.conclusion(conclusion_value)
     end
   end
 
@@ -23,13 +23,13 @@ describe Factree::DSL do
     let(:path) { Factree::Pathfinder.find(**facts, &decide) }
 
     it "creates a Path through the tree" do
-      subject.find_path(**facts, &decide).must_equal path
+      assert_equal path, subject.find_path(**facts, &decide)
     end
   end
 
   describe "#decide_between_alternatives" do
     it "creates a decision proc from a list of alternatives" do
-      subject.decide_between_alternatives({}).must_be_nil
+      assert_nil subject.decide_between_alternatives({})
     end
   end
 end

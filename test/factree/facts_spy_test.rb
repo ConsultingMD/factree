@@ -30,7 +30,7 @@ describe Factree::FactsSpy do
     end
 
     it "returns the fact value" do
-      subject[:foo].must_equal :bar
+      assert_equal :bar, subject[:foo]
     end
   end
 end

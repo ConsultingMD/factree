@@ -31,11 +31,11 @@ describe Factree::Pathfinder do
     subject { Factree::Pathfinder.find facts, &root_proc }
 
     it "knows all of the facts that were required along the way" do
-      subject.required_facts.must_equal [:lives_in_trash_can?, :has_unibrow?]
+      assert_equal [:lives_in_trash_can?, :has_unibrow?], subject.required_facts
     end
 
     it "keeps going until it reaches a conclusion" do
-      subject.complete?.must_equal true
+      assert subject.complete?
     end
 
     describe "when there are not enough facts to reach a conclusion" do
@@ -44,7 +44,7 @@ describe Factree::Pathfinder do
       end
 
       it "knows what facts are needed to make the next decision" do
-        subject.required_facts.must_include :has_unibrow?
+        assert_includes subject.required_facts, :has_unibrow?
       end
     end
 
