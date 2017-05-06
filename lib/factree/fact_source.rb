@@ -37,8 +37,21 @@ module Factree
     # A hash mapping all of the fact names to values.
     def facts
       self.class.fact_names.map { |fact_name|
-        [fact_name, send(fact_name)]
-      }.to_h
+        fact_value = nil
+
+        fact_known = catch(UNKNOWN_FACT) do
+          fact_value = send(fact_name)
+          true
+        end
+
+        fact_known ? [fact_name, fact_value] : nil
+      }.compact.to_h
     end
+
+    def unknown
+      throw UNKNOWN_FACT
+    end
+
+    UNKNOWN_FACT = Object.new
   end
 end

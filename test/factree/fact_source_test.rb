@@ -34,5 +34,20 @@ describe Factree::FactSource do
         color: :brown
       )
     end
+
+    describe "when a fact is unknown" do
+      let(:source_class) do
+        Class.new do
+          include Factree::FactSource
+
+          def_fact(:is_hungry?) { unknown; true }
+          def_fact(:color) { :brown }
+        end
+      end
+
+      it "leaves that fact out of the hash" do
+        subject.facts.must_equal(color: :brown)
+      end
+    end
   end
 end
