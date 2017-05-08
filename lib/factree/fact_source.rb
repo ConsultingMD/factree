@@ -18,7 +18,7 @@ module Factree
         fact_name
       end
 
-      # @return [Array<Symbol>] Names for all of the facts that will be returned by {FactSource#facts}.
+      # @return [Array<Symbol>] Names for all of the defined facts, whether their values are known or not.
       def fact_names
         fact_procs.keys.freeze
       end
@@ -79,7 +79,7 @@ module Factree
     end
 
     # A hash mapping all of the known fact names to values.
-    def facts
+    def to_h
       self.class.fact_procs.flat_map { |fact_name, _fact_proc|
         fact_known = true
         fact_value = fetch(fact_name) { fact_known = false }

@@ -76,12 +76,12 @@ describe Factree::FactSource do
     end
   end
 
-  describe "#facts" do
+  describe "#to_h" do
     it "returns a hash with all of the known fact values" do
       assert_equal({
         is_hungry?: true,
         color: :brown
-      }, subject.facts)
+      }, subject.to_h)
     end
   end
 end
