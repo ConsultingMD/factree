@@ -88,6 +88,11 @@ module Factree
       }.to_h
     end
 
+    # Takes several FactSources and returns a single hash containing all of their facts mixed together.
+    def self.to_combined_h(*sources)
+      sources.map(&:to_h).inject({}, &:merge)
+    end
+
     # Calling this method in a fact proc will signal that the fact's value is unknown.
     def unknown
       throw UNKNOWN_FACT

@@ -84,4 +84,33 @@ describe Factree::FactSource do
       }, subject.to_h)
     end
   end
+
+  describe ".to_combined_h" do
+    let(:sources) {
+      [
+        # Pretend these hashes are FactSources. Both types support to_h.
+        { a: 1 },
+        { b: 2 }
+      ]
+    }
+    subject { Factree::FactSource.to_combined_h *sources }
+
+    it "combines the facts from several sources into a single hash" do
+      assert_equal({ a: 1, b: 2 }, subject)
+    end
+
+    describe "when later fact names conflict with earlier ones" do
+      let(:sources) {
+        [
+          # Pretend these hashes are FactSources. Both types support to_h.
+          { a: 1 },
+          { a: 2 }
+        ]
+      }
+
+      it "uses the later value" do
+        assert_equal({ a: 2 }, subject)
+      end
+    end
+  end
 end
