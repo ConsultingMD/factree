@@ -98,6 +98,6 @@ module Factree
       throw UNKNOWN_FACT
     end
 
-    UNKNOWN_FACT = "Attempted to determine the value of a fact that is unknown"
+    UNKNOWN_FACT = "Attempted to determine the value of a fact that is unknown".freeze
   end
 end
