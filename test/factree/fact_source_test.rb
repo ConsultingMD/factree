@@ -12,6 +12,14 @@ describe Factree::FactSource do
   end
   subject { source_class.new }
 
+  describe ".def_fact" do
+    it "requires a block to define the fact's value" do
+      assert_raises ArgumentError do
+        source_class.def_fact :foo
+      end
+    end
+  end
+
   describe ".defined?" do
     it "is true when a fact has been defined for the class" do
       assert source_class.defined?(:color)

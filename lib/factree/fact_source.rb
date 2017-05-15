@@ -9,10 +9,12 @@ module Factree
     end
 
     module ClassMethods
-      # Defines a named fact along with a method-like block used to compute the fact's value.
+      # Defines a named fact along with a block used to compute the fact's value.
       #
       # @param [Symbol] fact_name The new fact's name
       def def_fact(fact_name, &block)
+        raise ArgumentError, "block required" unless block_given?
+
         all_fact_procs = fact_procs.merge(fact_name => block).freeze
         class_variable_set(:@@_fact_procs, all_fact_procs)
         fact_name
