@@ -2,6 +2,7 @@ module Factree
   autoload :Aggregate, "factree/aggregate"
   autoload :Conclusion, "factree/conclusion"
   autoload :DSL, "factree/dsl"
+  autoload :FactSource, "factree/fact_source"
   autoload :Facts, "factree/facts"
   autoload :FactsSpy, "factree/facts_spy"
   autoload :Path, "factree/path"
