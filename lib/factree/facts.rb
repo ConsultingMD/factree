@@ -38,7 +38,12 @@ class Factree::Facts
   # @param [Symbol] fact_name
   # @return [Object]
   def [](fact_name)
-    self.require(fact_name)
+    self.require fact_name
+    peek fact_name
+  end
+
+  # Gets the value of a fact, if present, without {#require}ing the fact.
+  def peek(fact_name)
     @hash[fact_name]
   end
 

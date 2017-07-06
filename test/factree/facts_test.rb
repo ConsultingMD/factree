@@ -23,6 +23,12 @@ describe Factree::Facts do
     end
   end
 
+  describe '#peek' do
+    it "looks in the hash" do
+      assert_equal :in_a_box, subject[:location]
+    end
+  end
+
   describe "#require" do
     it "throws when missing facts" do
       assert_nil(Factree::Facts.catch_missing_facts {
