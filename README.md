@@ -84,6 +84,55 @@ path.required_facts
 #=> [:mammal?, :herbivore?]
 ```
 
+### Supplying facts
+
+Factree is designed to work with large decision functions that depend on many different facts. The {Factree::FactSource FactSource} mixin can help you organize them. It also provides a place for you to distill complex data into simple values, allowing you to keep your decision functions concise and readable.
+
+Here's an example of a fact source that examines a person and supplies a set of facts to help select that individual's ideal car.
+
+```ruby
+class DriverFactSource
+  include Factree::FactSource
+
+  def initialize(person)
+    @person = person
+    freeze
+  end
+
+  def_fact(:needs_fast_car?) { @person.name == 'Ricky Bobby' }
+
+  def_fact(:needs_cheap_car?) { @person.account_balance < 500.00 }
+
+  def_fact(:needs_extra_seats?) do
+    unknown if @person.family_size == :unknown
+
+    @person.family_size > 4
+  end
+end
+```
+
+Our DriverFactSource is just a class with some method-like fact definitions. Let's instantiate it for a person and see how it works.
+
+```ruby
+Person = Struct.new(:name, :account_balance, :family_size)
+tom = Person.new("Tom", 10_000.00, :unknown)
+source = DriverFactSource.new(tom)
+```
+
+The source's primary job is to crank out a set of facts that can be fed into `find_path`.
+
+```ruby
+source.to_h
+#=> {:needs_fast_car?=>false, :needs_cheap_car?=>false}
+```
+
+Two of the facts we defined are included, but you might have noticed that `:needs_extra_seats?` is missing. Since we're dealing with facts that might not be known, FactSource provides an easy way to conditionally omit those facts. Just call {Factree::FactSource#unknown `#unknown`} instead of returning a value, and the fact will be omitted from the collection returned by {Factree::FactSource#to_h `#to_h`}. Attempting to {Factree::FactSource#fetch `#fetch`} it will raise an error.
+
+```ruby
+source.fetch(:needs_extra_seats?)
+# Factree::FactSource::UnknownFactError: unknown fact: needs_extra_seats?
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
