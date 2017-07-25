@@ -102,7 +102,7 @@ find_path **facts, &decide
 
 ### Supplying facts
 
-Factree is designed to work with decision functions that depend on many different facts. The {Factree::FactSource FactSource} mixin can help you organize them. It also provides a place for you to distill complex data into simple values, allowing you to keep your decision functions concise and readable.
+Factree is designed to work with decision functions that depend on many different facts. The {Factree::FactSource FactSource} mixin can help you organize them. A fact source class also provides a place for you to distill complex data into simple values, allowing you to keep your decision functions concise and readable.
 
 Here's an example of a fact source that supplies a set of facts to help select a car for a buyer.
 
@@ -148,6 +148,72 @@ Two of the facts we defined are included, but you might have noticed that `:need
 source.fetch(:needs_extra_seats?)
 # Factree::FactSource::UnknownFactError: unknown fact: needs_extra_seats?
 ```
+
+### Organizing your decision functions
+
+It's recommended that you define your decision functions in their own modules, particularly when they're large or complex. For example:
+
+```ruby
+module Decisions
+  def self.decide_something(facts)
+    # ...
+  end
+end
+```
+
+A method reference can be used to pass your decision function to `#find_path`.
+
+```ruby
+find_path **facts, &Decisions.method(:decide_something)
+```
+
+#### Splitting up large functions
+
+Factree comes with a tool for splitting big decisions into separate functions to simplify them and make them independently testable. Take this cheese choice, for example.
+
+```ruby
+def choose_cheese(facts)
+  if facts[:soft?]
+    return conclusion :brie unless facts[:blue?]
+    return conclusion :gorgonzola if facts[:cows_milk?]
+    conclusion :brie
+  else
+    return conclusion :pecorino_toscano unless facts[:from_cows_milk?]
+    return conclusion :emmental if facts[:holes?]
+    conclusion :gruyere
+  end
+end
+```
+
+Say I wanted to split up my choice into separate functions for soft and hard cheeses. I can use {Factree.decide_between_alternatives `decide_between_alternatives`} to accomplish that.
+
+```ruby
+def choose_soft_cheese(facts)
+  return unless facts[:soft?]
+
+  return conclusion :brie unless facts[:blue?]
+  return conclusion :gorgonzola if facts[:cows_milk?]
+  conclusion :roquefort
+end
+
+def choose_hard_cheese(facts)
+  return if facts[:soft?]
+
+  return conclusion :pecorino_toscano unless facts[:from_cows_milk?]
+  return conclusion :emmental if facts[:holes?]
+  conclusion :gruyere
+end
+
+def choose_cheese(facts)
+  decide_between_alternatives facts,
+    method(:choose_soft_cheese),
+    method(:choose_hard_cheese)
+end
+```
+
+`decide_between_alternatives` will try each decision function in order. If the first returns `nil`, it will try the second, and so on, until a conclusion or an unknown fact is reached.
+
+By splitting up my decision method into two separate ones, I've made them independently testable. They can also be reordered, and I've eliminated a level of nesting inside of a conditional statement.
 
 ## Development
 
