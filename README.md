@@ -27,7 +27,7 @@ Or install it yourself as:
 
 ### Finding paths through a decision function
 
-Factree provides tools for making choices based on a set of facts that are not yet known. You write a decision function that takes a set facts and returns a conclusion. Factree will run your function and make sure it has all of the facts it needs to complete. If any facts are missing, Factree will tell you what's needed to continue.
+Factree provides tools for making choices based on a set of facts that are not yet known. You write a decision function that takes a set facts and returns a conclusion. Factree will run your function and make sure it has all of the facts it needs to complete. If any are missing, Factree will tell you what's needed to continue.
 
 For example, say I want to pick an animal based on its attributes. First I'll write a function to make the decision.
 
@@ -55,7 +55,7 @@ path.required_facts
 #=> [:mammal?]
 ```
 
-`find_path` will run my `decide` function until it reaches a conclusion or asks for a fact that is unknown. In this case, my function checks `facts[:mammal?]` right off the bat, and since I didn't provide that fact, `find_path` stopped right there. The path through my decision tree was incomplete.
+`find_path` will run my `decide` function until it reaches a conclusion or asks for a fact that is unknown. In this case, my function checks `facts[:mammal?]` right off the bat, and since I didn't provide that fact, `find_path` stopped there. The path through my decision tree was incomplete.
 
 Thankfully, `find_path` keeps track of all of the facts that are requested as it makes its way through a decision function. If it has to stop because a fact is unknown, the fact's name will be included in {Path.required_facts `required_facts`}. You can check `required_facts` to see exactly what's required to progress through the function.
 
@@ -87,9 +87,9 @@ path.required_facts
 
 ### Supplying facts
 
-Factree is designed to work with large decision functions that depend on many different facts. The {Factree::FactSource FactSource} mixin can help you organize them. It also provides a place for you to distill complex data into simple values, allowing you to keep your decision functions concise and readable.
+Factree is designed to work with decision functions that depend on many different facts. The {Factree::FactSource FactSource} mixin can help you organize them. It also provides a place for you to distill complex data into simple values, allowing you to keep your decision functions concise and readable.
 
-Here's an example of a fact source that examines a person and supplies a set of facts to help select that individual's ideal car.
+Here's an example of a fact source that supplies a set of facts to help select a car for a buyer.
 
 ```ruby
 class DriverFactSource
