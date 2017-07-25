@@ -32,6 +32,8 @@ Factree provides tools for making choices based on a set of facts that are not y
 For example, say I want to pick an animal based on its attributes. First I'll write a function to make the decision.
 
 ```ruby
+include Factree::DSL
+
 decide = ->(facts) do
   return conclusion :turtle unless facts[:mammal?]
 
@@ -46,7 +48,7 @@ end
 Then I'll pass that function to {Factree.find_path `find_path`} without any facts.
 
 ```ruby
-path = Factree.find_path &decide
+path = find_path &decide
 
 path.complete?
 #=> false
@@ -62,7 +64,7 @@ Thankfully, `find_path` keeps track of all of the facts that are requested as it
 Let's give `find_path` another try, this time with `mammal?: false`.
 
 ```ruby
-path = Factree.find_path mammal?: false, &decide
+path = find_path mammal?: false, &decide
 
 path.complete?
 #=> true
@@ -76,13 +78,26 @@ This time `find_path` had all of the facts it needed to reach a conclusion, so i
 Supplying different values for facts may lead to a different path through the decision function, changing the facts that are required. For example, if `mammal?` is true, then we'll also need `herbivore?` to get to a conclusion.
 
 ```ruby
-path = Factree.find_path mammal?: true, &decide
+path = find_path mammal?: true, &decide
 
 path.complete?
 #=> false
 
 path.required_facts
 #=> [:mammal?, :herbivore?]
+```
+
+### Using `Factree::DSL`
+
+Including {Factree::DSL `Factree::DSL`} in your code isn't mandatory. It just makes certain methods (like `find_path` and `conclusion`) easier to access. You can call the same methods on the {Factree `Factree`} module.
+
+```ruby
+Factree.find_path **facts, &decide
+
+# is the same as
+
+include Factree::DSL
+find_path **facts, &decide
 ```
 
 ### Supplying facts
