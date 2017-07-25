@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/factree.svg)](https://rubygems.org/gems/factree)
 [![Build Status](https://travis-ci.org/ConsultingMD/factree.svg?branch=master)](https://travis-ci.org/ConsultingMD/factree)
 
-Have a complicated decision to make? Factree will guide you through it step by step, identifying exactly which facts you need to gather along the way in order to reach a conclusion.
+Have a complicated decision to make? Factree will guide you through it step by step, identifying exactly which questions you need to answer along the way in order to reach a conclusion.
 
 ## Installation
 
