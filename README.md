@@ -178,7 +178,7 @@ def choose_cheese(facts)
     return conclusion :gorgonzola if facts[:cows_milk?]
     conclusion :brie
   else
-    return conclusion :pecorino_toscano unless facts[:from_cows_milk?]
+    return conclusion :pecorino_toscano unless facts[:cows_milk?]
     return conclusion :emmental if facts[:holes?]
     conclusion :gruyere
   end
@@ -199,7 +199,7 @@ end
 def choose_hard_cheese(facts)
   return if facts[:soft?]
 
-  return conclusion :pecorino_toscano unless facts[:from_cows_milk?]
+  return conclusion :pecorino_toscano unless facts[:cows_milk?]
   return conclusion :emmental if facts[:holes?]
   conclusion :gruyere
 end
@@ -223,8 +223,13 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/ConsultingMD/factree.
+Pull requests are welcome on GitHub at https://github.com/ConsultingMD/factree.
+
+This library is pretty mature and not under active development, but we're happy
+to discuss Github issues. Any active work will be tracked using a Grand Rounds
+internal Jira project ("COREX" at the moment).
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT
+License](http://opensource.org/licenses/MIT).
