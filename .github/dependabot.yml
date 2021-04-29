@@ -1,0 +1,23 @@
+version: 2
+registries:
+  rubygems-server-rubygems-pkg-github-com-consultingmd:
+    type: rubygems-server
+    url: https://rubygems.pkg.github.com/consultingmd
+    username: "${{secrets.RUBYGEMS_SERVER_RUBYGEMS_PKG_GITHUB_COM_CONSULTINGMD_USERNAME}}"
+    password: "${{secrets.RUBYGEMS_SERVER_RUBYGEMS_PKG_GITHUB_COM_CONSULTINGMD_PASSWORD}}"
+  rubygems-server-gems-graphql-pro:
+    type: rubygems-server
+    url: https://gems.graphql.pro
+    username: "${{secrets.RUBYGEMS_SERVER_GEMS_GRAPHQL_PRO_USERNAME}}"
+    password: "${{secrets.RUBYGEMS_SERVER_GEMS_GRAPHQL_PRO_PASSWORD}}"
+
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "07:00"
+  open-pull-requests-limit: 10
+  registries:
+  - rubygems-server-rubygems-pkg-github-com-consultingmd
+  - rubygems-server-gems-graphql-pro
